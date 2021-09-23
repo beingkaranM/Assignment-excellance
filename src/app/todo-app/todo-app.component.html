@@ -1,0 +1,110 @@
+<style>
+  .main-card{
+    margin-top:20px;
+    height: 30px;
+    font-style: oblique;
+    font-weight: 400;
+    font-size : x-large;
+    font-stretch: extra-expanded;
+    margin-bottom: 50px;
+  }
+  .todo-card{
+    margin-top:10px;
+    height: 60px;
+    font-weight: 400;
+    font-size : x-large;
+    font-stretch: extra-expanded;
+    margin-bottom: 40px;
+  }
+  .main-panel{
+    padding: 35px;
+  }
+  .bg-color{
+    padding: 50px;
+    background-color: lightgray
+  }
+  mat-label{
+    color: rgba(49, 45, 45, 0.801);
+    font-weight: 500;
+    font-size : medium;
+  }
+  .bt-color{
+    color:white;
+    background-color: black;
+  }
+
+  table {
+  width: 100%;
+  }
+
+  .mat-column-sn{
+    white-space: unset !important;
+    flex:0 0 15% !important;
+    width: 15%;
+  }
+
+  .mat-column-edit{
+    white-space: unset !important;
+    flex:0 0 25% !important;
+    width: 25%;
+  }
+
+  .margin-b{
+    margin-bottom: 50px;
+  }
+
+  .editable{
+    background-color:white;
+    color: black;
+    padding:10px;
+  }
+
+  .field-width{
+    min-width: 30%;
+  }
+
+</style>
+
+<div class="main-panel bg-color">
+  <div fxFlexFill class="margin-b" fxLayout="column" fxLayoutAlign="space-around center">
+    <div class="todo-card">
+      <mat-card > Todo List </mat-card>
+    </div>
+    <mat-form-field fxFlex ="30" class="field-width" appearance="fill">
+      <mat-label> Add a Todo for the day.....</mat-label>
+      <input matInput name="todo" id="todo_name" #todo_name (keydown)="onEnterPress($event)">
+    </mat-form-field>
+    <!-- <mat-card-actions fxFlexOffset="1"> -->
+      <!-- <button mat-button class="bt-color action-button" (click)='addTodo()' type="button">Add a Todo</button> -->
+    <!-- </mat-card-actions> -->
+  </div>
+  <div fxFlexFill fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="50">
+      <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="sn">
+          <th mat-header-cell *matHeaderCellDef> S.No. </th>
+          <td mat-cell *matCellDef="let element, let i=index"> {{i+1}} </td>
+        </ng-container>
+        <ng-container matColumnDef="todo">
+          <th mat-header-cell *matHeaderCellDef> Todo </th>
+          <td mat-cell *matCellDef="let element, let i = index">
+            <div *ngIf="element.isEditable==false"> {{element.todo}} </div>
+            <div class="editable" *ngIf="element.isEditable==true">
+              <input matInput name= "edit_todo.{{i}}" #edit_todo [(ngModel)]="element.todo" id="edit_todo">
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="edit">
+          <th mat-header-cell *matHeaderCellDef> Actions (Edit/Delete Todo) </th>
+          <td mat-cell *matCellDef="let element">
+            <button *ngIf="!element.isEditable" (click)="editTodo(element)"><mat-icon matIcon>edit</mat-icon></button>
+            <button *ngIf="element.isEditable" (click)="updateTodo(element)"><mat-icon matIcon>done</mat-icon></button>
+            <button (click)="deleteTodo(element)"><mat-icon matIcon>delete</mat-icon></button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+</div>

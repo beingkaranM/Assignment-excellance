@@ -1,0 +1,70 @@
+
+<style>
+  .margin-t-xs{
+    margin-top: 10px
+  }
+
+  .bg-color{
+    background:lightgray;
+    padding: 50px;
+  }
+
+  .user-panel{
+    padding: 35px;
+    margin-bottom: 30px;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  .main-panel{
+    padding: 35px;
+  }
+
+  .basic-card{
+    box-shadow: none;
+    padding-left: 4px;
+    /* color:#50646e; */
+  }
+</style>
+
+
+<div class="main-panel bg-color">
+  <div class="user-panel" fxLayout="column" fxLayoutAlign="space-around center">
+    <mat-card >LIST OF ALL USERS WITH PAGINATION</mat-card>
+  </div>
+  <div fxFlexFill fxLayout="row" fxLayoutAlign="center none">
+    <div fxFlex="50">
+      <table #table mat-table [dataSource]="dataSource.filteredData" class="mat-elevation-z8">
+          <ng-container matColumnDef="f_name">
+              <th mat-header-cell *matHeaderCellDef>First Name </th>
+              <td mat-cell *matCellDef="let element">
+                    {{element.first_name}}
+              </td>
+          </ng-container>
+          <ng-container matColumnDef="l_name">
+            <th mat-header-cell *matHeaderCellDef >Last Name</th>
+            <td mat-cell *matCellDef="let element">
+                    {{element.last_name}}
+            </td>
+        </ng-container>
+          <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let element">
+                      {{element.email}}
+              </td>
+          </ng-container>
+          <ng-container matColumnDef="pic">
+              <th mat-header-cell *matHeaderCellDef>Profile</th>
+              <td mat-cell *matCellDef="let element">
+                <img [src]="element.avatar"/></td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;"></tr>
+      </table>
+      <mat-paginator #paginator [length]="totalItems" [pageSize]="pageSize"
+      showFirstLastButtons (page)="onChangeCurrentPage($event)"></mat-paginator>
+    </div>
+  </div>
+</div>
